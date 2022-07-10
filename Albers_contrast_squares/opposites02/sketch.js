@@ -150,10 +150,10 @@ function draw() {
 
 }
 
-/**The base hue starts at 90 degrees, reminiscent of a Pythagorean triangle.
-*Increasing the values of increasing opposites by multiples of 90—90, 180, 270.
-When I added 90 to the base hue of 90 (a light shade of green), it produced a 180-degree-hue Cyan.
-I further added 180 degrees to the base 90, and got a 270-degree-hue indigo. Upon adding 270 degrees, I got RED.
+/**The base hue starts at 120 degrees, reminiscent of a Pythagorean triangle.
+*Increasing the values of increasing opposites by multiples of 90—90,180, 270.
+When I added 90 to the base hue of 120 (green), it produced a 210-degree-hue Azure.
+I further added 180 degrees to the base 120, and got a 300-degree-hue Magenta. Upon adding 270 degrees, I got Orange.
 It is important to note that the hue runs from 0 to 360 degrees.
 I felt like settling on 180 degrees gave the best contrast because of how different red and cyan are. Looking at the color wheel
 made me realize that the red and cyan are opposite on it and contrast each other. 180 is also the angle of a straight line between two points.
