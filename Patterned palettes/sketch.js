@@ -89,24 +89,36 @@ function createMonochromaticPalette(hue, sat, numberOfColors)
   let palette = []; // empty array to fill with colours and return at end
 
   colorMode(HSB); // correct color mode for color() function
+  let circleCycle = floor((hueInterval * numberOfColors) / 360);
 
   for (let colorIndex=0; colorIndex < numberOfColors; colorIndex++)
   {
 
     // FINISH THIS: how do we calculate the current hue at this point in the loop?
     
-    let currentHue = 0; // Fix this! It's not 0. What if it goes over 360?
+
+    let currentHue = hue + (hueInterval * colorIndex); // Fix this! It's not 0. What if it goes over 360?
+   // This if loop checks if the current hue goes above 360 and if so it subtracts 360 multiplyed by the circle cycle.
+    if(currentHue > 360)
+    {
+      currentHue - (360 * circleCycle);
+    }
+    
 
     // calculate current colour: is this correct?
     let currentColor = color(currentHue, sat, bright);
 
     // FINISH THIS: add the colour to the palette array 
     // your code goes here...
+    palette.push(currentColor);
+
+
 
   }
   
   // FINISH THIS: return the palette at the end
   // ...
+  return palette;
 }
 
 //--------------------------------------------------------------
@@ -217,7 +229,7 @@ let myPalette2; // this will hold another palette array
 function setup() {
 
   /// You can change the size of your drawing canvas if needed!
-  createCanvas(400, 400);
+  createCanvas(400, 800);
   
   // We can use HSB mode as follows 
   // from (https://p5js.org/reference/#/p5/colorMode):
@@ -238,9 +250,11 @@ function setup() {
   monochromaticPalette =  createMonochromaticPalette(hue, sat,numberOfColors);
   analogousPalette = createAnalogousPalette(hue,sat,bright,hueInterval,numberOfColors);
   
-  // FINISH THIS: create your oen palettes:
-  //myPalette1 = ???
-  //myPalette2 = ???
+  // FINISH THIS: create your own palettes:
+  myPalette1 = createMonochromaticPalette(90,20,70)
+  myPalette2 = createAnalogousPalette(20,40,10,50,9)
+  myPalette3 = createMonochromaticPalette(50,80,20)
+  myPalette4 = createAnalogousPalette(60,20,70,20,30)
 }
 
 ///-------------------------------------------
@@ -257,17 +271,61 @@ function draw() {
   // Label the pallette. See https://p5js.org/reference/#/p5/text
   fill(180); // gray
   textSize(16);
-  text("Monochromatic", 10, 48-12);
+  /** 
+  //To create a unified appearance and feel, monochromatic color schemes use a single hue in a variety of tints and tones. Despite the absence of color contrast, it often comes across as incredibly pristine and glossy. You can also quickly adjust the brightness and darkness of your colors. This scheme use hue 10, with 200 number of colurs
+  */
+  text("Monochromatic 1", 10, 48-12);
 
 
   drawPallette(monochromaticPalette, 10, 48, 200);
 
   fill(180); // gray
   textSize(16);
-  text("Analogous with hue = 60, interval = 15", 10, 128-12);
-  // draw with hue = 220
+  /** 
+   The color combinations known as analogous color schemes are those found adjacent to one another on the color wheel. They often resemble one another due to their near proximity on the color wheel, which results in a pleasing color scheme.  This scheme use hue 10 with 12 number of colors and an interval of 15
+  */
+  text("Analogous 1 with hue = 10, interval = 15", 10, 128-12);
+  // draw with hue = 10
   drawPallette(analogousPalette, 10, 128, 200);
 
   /// draw other pallettes below -- possibly resize your canvas.
+  fill(180); // gray
+  textSize(16);
+  /** 
+  //To create a unified appearance and feel, monochromatic color schemes use a single hue in a variety of tints and tones. Despite the absence of color contrast, it often comes across as incredibly pristine and glossy. You can also quickly adjust the brightness and darkness of your colors. This scheme use hue 50, with 20 number of colurs
+  */
+  text("Monochromatic 2", 10, 208-12);
 
+  drawPallette(myPalette1, 10, 208, 200);
+
+  fill(180); // gray
+  textSize(16);
+  /** 
+   The color combinations known as analogous color schemes are those found adjacent to one another on the color wheel. They often resemble one another due to their near proximity on the color wheel, which results in a pleasing color scheme.  This scheme use hue 20 with 9 number of colors and an interval of 50
+  */
+  text("Analogous 2 with hue = 20, interval = 50", 10, 288-12);
+  // draw with hue = 20
+  drawPallette(myPalette2, 10, 288, 200);
+
+  fill(180); // gray
+  textSize(16);
+  /** 
+  //To create a unified appearance and feel, monochromatic color schemes use a single hue in a variety of tints and tones. Despite the absence of color contrast, it often comes across as incredibly pristine and glossy. You can also quickly adjust the brightness and darkness of your colors. This scheme use hue 10, with 200 number of colurs
+  */
+  text("Monochromatic 3", 10, 368-12);
+
+
+  drawPallette(myPalette3, 10, 368, 200);
+
+  fill(180); // gray
+  textSize(16);
+  /** 
+   The color combinations known as analogous color schemes are those found adjacent to one another on the color wheel. They often resemble one another due to their near proximity on the color wheel, which results in a pleasing color scheme.  This scheme use hue 60 with 30 number of colors and an interval of 20
+  */
+  text("Analogous 3 with hue = 60, interval = 20", 10, 448-12);
+  // draw with hue = 60
+  drawPallette(myPalette4, 10, 448, 200);
+
+  
 }
+
