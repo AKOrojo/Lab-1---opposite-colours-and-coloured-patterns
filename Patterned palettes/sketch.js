@@ -271,6 +271,36 @@ function drawPalletteRectPattern(
   pop(); // return to original drawing state
 }
 
+function drawPalletteElipPattern(
+  palette,
+  startX,
+  startY,
+  ElipSize,
+  ElipSpacing
+) {
+  let numberOfColors = palette.length; // total colours to draw
+
+  // size of each of the pallette's color swatches in pixels
+
+  push(); // save drawing state
+  translate(startX, startY); // move to start x,y position
+
+  for (let colorIndex = 0; colorIndex < numberOfColors; colorIndex++) {
+    noStroke();
+    rectMode(CORNER); // draw based on top corner
+
+    // draw color square at current position with current colour
+    fill(palette[colorIndex]);
+    ellipse(0, 0, ElipSize, ElipSize);
+
+    // FINISH THIS: move drawing cursor to next swatch's position for next loop.
+    // Take into account the size of this swatch and spacing between.
+    // (see function above)
+
+    translate(ElipSpacing + ElipSize, 0);
+  }
+  pop(); // return to original drawing state
+}
 //--------------------------------------------------------------
 //--------------------------------------------------------------
 /// Global variables
@@ -344,7 +374,8 @@ function setup() {
   myPalette4 = createAnalogousPalette(60, 20, 70, 20, 30);
   myPalette5 = createAnalogousPalette(180, 20, 70, 50, 5);
   myPalette7 = createSinePalette(5, 0.3);
-  myPalette8 = createCosinePalette(10, 0.3);
+  myPalette8 = createCosinePalette(10, 0.5);
+  myPalette9 = createCosinePalette(10, 2.0);
 }
 
 ///-------------------------------------------
@@ -442,9 +473,15 @@ function draw() {
 
   fill(180); // gray
   textSize(16);
-  text("Cos Palette", 10, 730 - 12);
+  text("Cos Palette", 10, 720 - 12);
 
-  drawPalletteRectPattern(myPalette8, 10, 740, 20, 10);
+  drawPalletteRectPattern(myPalette8, 10, 720, 20, 10);
+
+  fill(180); // gray
+  textSize(16);
+  text("Ellipse Palette", 10, 775 - 12);
+
+  drawPalletteElipPattern(myPalette9, 20, 780, 20, 10);
 
   fill("white");
   rect(0, 610, width, 20);
