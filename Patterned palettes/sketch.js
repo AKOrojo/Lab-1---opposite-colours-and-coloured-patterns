@@ -101,7 +101,7 @@ function RGBConvertHSL(r, g, b) {
 }
 
 //Sine Palette
-function createSinePalette(r, g, b, numberOfColors, frequency) {
+function createSinePalette(numberOfColors, frequency) {
   let palette = [];
   colorMode(HSB);
 
@@ -109,6 +109,32 @@ function createSinePalette(r, g, b, numberOfColors, frequency) {
     r = Math.sin(frequency * i + 0) * 127 + 128;
     g = Math.sin(frequency * i + 2) * 127 + 128;
     b = Math.sin(frequency * i + 4) * 127 + 128;
+
+    convert = RGBConvertHSL(r, g, b);
+
+    hue = convert[0];
+    sat = convert[1];
+    bright = convert[2];
+
+    let currentColor = color(hue, sat, bright);
+
+    // FINISH THIS: add the colour to the palette array
+    // your code goes here...
+    palette.push(currentColor);
+  }
+
+  return palette;
+}
+
+//Cosine Palette
+function createCosinePalette(numberOfColors, frequency) {
+  let palette = [];
+  colorMode(HSB);
+
+  for (var i = 0; i < numberOfColors; i++) {
+    r = Math.cos(frequency * i + 0) * 127 + 128;
+    g = Math.cos(frequency * i + 2) * 127 + 128;
+    b = Math.cos(frequency * i + 4) * 127 + 128;
 
     convert = RGBConvertHSL(r, g, b);
 
@@ -280,10 +306,10 @@ function setup() {
   bSlider.position(20, 80);
   bSlider.style("width", "70px");
 
-  asSlider = createSlider(0, 100, 100);
+  asSlider = createSlider(0, 100, 50);
   asSlider.position(20, 110);
   asSlider.style("width", "70px");
-  abSlider = createSlider(0, 100, 100);
+  abSlider = createSlider(0, 100, 5);
   abSlider.position(20, 140);
   abSlider.style("width", "70px");
 
@@ -317,7 +343,8 @@ function setup() {
   myPalette3 = createMonochromaticPalette(50, 80, 20);
   myPalette4 = createAnalogousPalette(60, 20, 70, 20, 30);
   myPalette5 = createAnalogousPalette(180, 20, 70, 50, 5);
-  myPalette7 = createSinePalette(200, 50, 300, 5, 0, 0.3);
+  myPalette7 = createSinePalette(5, 0.3);
+  myPalette8 = createCosinePalette(10, 0.3);
 }
 
 ///-------------------------------------------
@@ -407,7 +434,17 @@ function draw() {
 
   drawPalletteRectPattern(myPalette6, 10, 570, 20, 20);
 
-  drawPalletteRectPattern(myPalette7, 10, 650, 20, 20);
+  fill(180); // gray
+  textSize(16);
+  text("Sine Palette", 10, 670 - 12);
+
+  drawPalletteRectPattern(myPalette7, 10, 670, 20, 20);
+
+  fill(180); // gray
+  textSize(16);
+  text("Cos Palette", 10, 730 - 12);
+
+  drawPalletteRectPattern(myPalette8, 10, 740, 20, 10);
 
   fill("white");
   rect(0, 610, width, 20);
