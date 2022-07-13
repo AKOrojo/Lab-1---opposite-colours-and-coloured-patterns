@@ -35,6 +35,9 @@
 // with different shades represented by using fixed intervals of brightness.
 // Note that the saturation stays the same throughout.
 
+// Variables
+let hSlider, sSlider, bSlider, asSlider, abSlider;
+
 /**
  * @param {Number} hue Hue angle for this color range, from 0-359
  * @param {Number} sat how "colorful" or gray this color is, from 0-100
@@ -71,6 +74,57 @@ function createMonochromaticPalette(hue, sat, numberOfColors) {
 // a hue angle (say 0) and increase it by a fixed amount (say
 // 30 degrees) 6 times to create 6 different color swatches of
 // hues 0, 30, 60, 90, 120, 150. Brightness and saturation stay the same.
+
+// RGB to HSL Converter
+
+function RGBConvertHSL(r, g, b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const l = Math.max(r, g, b);
+  const s = l - Math.min(r, g, b);
+  const h = s
+    ? l === r
+      ? (g - b) / s
+      : l === g
+      ? 2 + (b - r) / s
+      : 4 + (r - g) / s
+    : 0;
+
+  hsl = [
+    60 * h < 0 ? 60 * h + 360 : 60 * h,
+    100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
+    (100 * (2 * l - s)) / 2,
+  ];
+
+  return hsl;
+}
+
+//Sine Palette
+function createSinePalette(r, g, b, numberOfColors, frequency) {
+  let palette = [];
+  colorMode(HSB);
+
+  for (var i = 0; i < numberOfColors; i++) {
+    r = Math.sin(frequency * i + 0) * 127 + 128;
+    g = Math.sin(frequency * i + 2) * 127 + 128;
+    b = Math.sin(frequency * i + 4) * 127 + 128;
+
+    convert = RGBConvertHSL(r, g, b);
+
+    hue = convert[0];
+    sat = convert[1];
+    bright = convert[2];
+
+    let currentColor = color(hue, sat, bright);
+
+    // FINISH THIS: add the colour to the palette array
+    // your code goes here...
+    palette.push(currentColor);
+  }
+
+  return palette;
+}
 
 /**
  * @param {Number} hue Hue angle for this color range, from 0-359
@@ -214,6 +268,25 @@ function setup() {
   /// You can change the size of your drawing canvas if needed!
   createCanvas(400, 800);
 
+  // Slider Controls
+
+  hSlider = createSlider(0, 360, 90);
+  hSlider.position(20, 20);
+  hSlider.style("width", "70px");
+  sSlider = createSlider(0, 100, 100);
+  sSlider.position(20, 50);
+  sSlider.style("width", "70px");
+  bSlider = createSlider(0, 100, 100);
+  bSlider.position(20, 80);
+  bSlider.style("width", "70px");
+
+  asSlider = createSlider(0, 100, 100);
+  asSlider.position(20, 110);
+  asSlider.style("width", "70px");
+  abSlider = createSlider(0, 100, 100);
+  abSlider.position(20, 140);
+  abSlider.style("width", "70px");
+
   // We can use HSB mode as follows
   // from (https://p5js.org/reference/#/p5/colorMode):
   // Setting colorMode(HSB) lets you use the HSB system instead.
@@ -244,6 +317,7 @@ function setup() {
   myPalette3 = createMonochromaticPalette(50, 80, 20);
   myPalette4 = createAnalogousPalette(60, 20, 70, 20, 30);
   myPalette5 = createAnalogousPalette(180, 20, 70, 50, 5);
+  myPalette7 = createSinePalette(200, 50, 300, 5, 0, 0.3);
 }
 
 ///-------------------------------------------
@@ -255,6 +329,15 @@ function setup() {
 function draw() {
   background(0);
   noStroke();
+
+  //Sliders
+  const h = hSlider.value();
+  const s = sSlider.value();
+  const b = bSlider.value();
+  const as = asSlider.value();
+  const ab = abSlider.value();
+
+  myPalette6 = createAnalogousPalette(h, s, b, as, ab);
 
   // Label the pallette. See https://p5js.org/reference/#/p5/text
   fill(180); // gray
@@ -316,5 +399,28 @@ function draw() {
   textSize(16);
   text("Analogous Rect Palette 1 with hue = 60, interval = 20", 10, 510 - 12);
 
-  drawPalletteRectPattern(myPalette5, 10, 530, 20, 20);
+  drawPalletteRectPattern(myPalette5, 10, 510, 20, 20);
+
+  fill(180); // gray
+  textSize(16);
+  text("Analogous Rect Palette 2 with hue = 60, interval = 20", 10, 570 - 12);
+
+  drawPalletteRectPattern(myPalette6, 10, 570, 20, 20);
+
+  drawPalletteRectPattern(myPalette7, 10, 650, 20, 20);
+
+  fill("white");
+  rect(0, 610, width, 20);
+  fill("black");
+  textSize(9);
+  text("Hue", 10, 620);
+  text("Sat", 50, 620);
+  text("Bri", 90, 620);
+  text("Hue Int", 140, 620);
+  text("No. Colors", 200, 620);
+  text(h, 30, 620);
+  text(s, 70, 620);
+  text(b, 110, 620);
+  text(as, 170, 620);
+  text(ab, 250, 620);
 }
